@@ -67,7 +67,7 @@
                 transparent 70%
             );
             transform: rotate(45deg);
-            animation: diagonalShine 3s infinite;
+            animation: diagonalShine 2s infinite linear;
             pointer-events: none;
             z-index: 2;
         }
@@ -75,8 +75,11 @@
             0% {
                 transform: translateX(-100%) translateY(-100%) rotate(45deg);
             }
-            100% {
+            50% {
                 transform: translateX(100%) translateY(100%) rotate(45deg);
+            }
+            100% {
+                transform: translateX(-100%) translateY(-100%) rotate(45deg);
             }
         }
         .clickable-image::before {
