@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Галерея</title>
+    <title>BROWS</title>
     <style>
         * {
             box-sizing: border-box;
@@ -45,10 +45,39 @@
         .clickable-image {
             cursor: pointer;
             position: relative;
-            transition: transform 0.3s ease;
+            overflow: hidden;
         }
         .clickable-image:hover {
             transform: scale(1.01);
+            transition: transform 0.3s ease;
+        }
+        .clickable-image::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent 30%,
+                rgba(255, 255, 255, 0.1) 45%,
+                rgba(255, 255, 255, 0.3) 50%,
+                rgba(255, 255, 255, 0.1) 55%,
+                transparent 70%
+            );
+            transform: rotate(45deg);
+            animation: diagonalShine 3s infinite;
+            pointer-events: none;
+            z-index: 2;
+        }
+        @keyframes diagonalShine {
+            0% {
+                transform: translateX(-100%) translateY(-100%) rotate(45deg);
+            }
+            100% {
+                transform: translateX(100%) translateY(100%) rotate(45deg);
+            }
         }
         .clickable-image::before {
             content: '';
@@ -59,16 +88,16 @@
             bottom: 0;
             z-index: 1;
             pointer-events: none;
-            animation: gentlePulse 3s infinite, gentleShine 4s infinite;
+            animation: gentlePulse 3s infinite;
             border-radius: 8px;
         }
         @keyframes gentlePulse {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(151, 192, 137, 0.4); }
-            50% { box-shadow: 0 0 0 6px rgba(151, 192, 137, 0); }
-        }
-        @keyframes gentleShine {
-            0%, 100% { background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%); }
-            50% { background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%); }
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(151, 192, 137, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 0 6px rgba(151, 192, 137, 0);
+            }
         }
         .button-container {
             text-align: center;
