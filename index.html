@@ -8,16 +8,14 @@
         * {
             box-sizing: border-box;
         }
-        
         body {
             background-color: #dbe9da;
             margin: 0;
             padding: 20px;
             font-family: Arial, sans-serif;
         }
-        
         .container {
-            max-width: 1120px; 
+            max-width: 1120px;
             margin: 0 auto;
             padding: 0 20px;
         }
@@ -30,7 +28,7 @@
         }
         .image-container {
             width: 100%;
-            max-width: 1080px; 
+            max-width: 1080px;
             display: flex;
             justify-content: center;
             background-color: #fff;
@@ -44,11 +42,38 @@
             height: auto;
             display: block;
         }
+        .clickable-image {
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+        .clickable-image:hover {
+            transform: scale(1.01);
+        }
+        .clickable-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+            pointer-events: none;
+            animation: gentlePulse 3s infinite, gentleShine 4s infinite;
+            border-radius: 8px;
+        }
+        @keyframes gentlePulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(151, 192, 137, 0.4); }
+            50% { box-shadow: 0 0 0 6px rgba(151, 192, 137, 0); }
+        }
+        @keyframes gentleShine {
+            0%, 100% { background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%); }
+            50% { background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%); }
+        }
         .button-container {
             text-align: center;
             padding: 30px 0;
         }
-        
         .cta-button {
             display: inline-block;
             background-color: #97c089;
@@ -74,35 +99,28 @@
                 padding: 0 40px;
             }
         }
-        
         @media (max-width: 768px) {
             .container {
                 padding: 0 20px;
             }
-            
             .vertical-gallery {
                 gap: 20px;
             }
-            
             .cta-button {
                 padding: 16px 40px;
                 font-size: 18px;
             }
         }
-        
         @media (max-width: 480px) {
             body {
                 padding: 15px;
             }
-            
             .container {
                 padding: 0 10px;
             }
-            
             .vertical-gallery {
                 gap: 15px;
             }
-            
             .cta-button {
                 padding: 14px 35px;
                 font-size: 16px;
@@ -121,8 +139,10 @@
             <div class="image-container">
                 <img src="2.JPG" alt="" onerror="this.style.display='none'">
             </div>
-            <div class="image-container">
-                <img src="3.JPG" alt="" onerror="this.style.display='none'">
+            <div class="image-container clickable-image">
+                <a href="https://dikidi.net/458753" target="_blank">
+                    <img src="3.JPG" alt="Кликабельное изображение" onerror="this.style.display='none'">
+                </a>
             </div>
             <div class="image-container">
                 <img src="4.JPG" alt="" onerror="this.style.display='none'">
@@ -146,53 +166,5 @@
             </a>
         </div>
     </div>
-    <script>
-        window.addEventListener('load', function() {
-            const images = document.querySelectorAll('.image-container img');
-            let loadedCount = 0;
-            let errorCount = 0;
-            
-            images.forEach((img, index) => {
-                if (img.complete && img.naturalWidth !== 0) {
-                    loadedCount++;
-                    console.log(`Картинка ${index + 1}.JPG загружена: ${img.naturalWidth}x${img.naturalHeight}`);
-                } else {
-                    errorCount++;
-                    console.error(`Не загружена картинка: ${index + 1}.JPG`);
-                    const container = img.parentElement;
-                    container.innerHTML = `
-                        <div style="
-                            width: 100%; 
-                            height: 300px; 
-                            display: flex; 
-                            align-items: center; 
-                            justify-content: center; 
-                            background: #f5f5f5; 
-                            color: #888;
-                            font-weight: bold;
-                            border: 2px dashed #ccc;
-                        ">
-                            Изображение ${index + 1}.JPG не найдено
-                        </div>
-                    `;
-                }
-            });
-            
-            if (errorCount > 0) {
-                console.warn(`Внимание! Не загружено изображений: ${errorCount}. Проверьте имена файлов.`);
-            } else {
-                console.log(`Все ${loadedCount} изображений успешно загружены.`);
-            }
-        });
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const images = document.querySelectorAll('.image-container img');
-            images.forEach(img => {
-                img.addEventListener('error', function() {
-                    console.error('Ошибка загрузки изображения:', this.src);
-                });
-            });
-        });
-    </script>
 </body>
 </html>
