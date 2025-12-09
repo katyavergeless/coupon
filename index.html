@@ -50,7 +50,7 @@
             animation: gentleScalePulse 4s infinite ease-in-out;
         }
         .clickable-image:hover {
-            transform: scale(1.03);
+            transform: scale(1.01);
             transition: transform 0.3s ease;
         }
         @keyframes gentleScalePulse {
@@ -58,62 +58,56 @@
                 transform: scale(1);
             }
             50% {
-                transform: scale(1.015);
+                transform: scale(1.01);
             }
         }
-        .clickable-image::before {
+        .click-indicator {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            background-color: rgba(151, 192, 137, 0.9);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            z-index: 3;
+            display: none;
+            animation: clickIndicatorPulse 2s infinite;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        @keyframes clickIndicatorPulse {
+            0%, 100% {
+                transform: scale(1);
+                background-color: rgba(151, 192, 137, 0.9);
+            }
+            50% {
+                transform: scale(1.05);
+                background-color: rgba(151, 192, 137, 1);
+            }
+        }
+        .clickable-image::after {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            z-index: 1;
-            pointer-events: none;
+            border: 3px solid #97c089;
             border-radius: 8px;
-            animation: gentlePulse 2s infinite ease-in-out;
-        }
-        .clickable-image::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                45deg,
-                transparent 30%,
-                rgba(255, 255, 255, 0.1) 45%,
-                rgba(255, 255, 255, 0.3) 50%,
-                rgba(255, 255, 255, 0.1) 55%,
-                transparent 70%
-            );
-            transform: rotate(45deg);
-            animation: diagonalShine 4.5s infinite linear;
             pointer-events: none;
             z-index: 2;
-            opacity: 0.8;
+            opacity: 0.7;
+            animation: borderPulse 3s infinite;
         }
-        @keyframes diagonalShine {
-            0% {
-                transform: translateX(-100%) translateY(-100%) rotate(45deg);
-            }
-            16.666% {
-                transform: translateX(100%) translateY(100%) rotate(45deg);
-            }
-            33.333% {
-                transform: translateX(-100%) translateY(-100%) rotate(45deg);
-            }
-            100% {
-                transform: translateX(-100%) translateY(-100%) rotate(45deg);
-            }
-        }
-        @keyframes gentlePulse {
+        @keyframes borderPulse {
             0%, 100% {
-                box-shadow: 0 0 0 0 rgba(151, 192, 137, 0);
+                border-width: 3px;
+                opacity: 0.5;
             }
             50% {
-                box-shadow: 0 0 0 8px rgba(151, 192, 137, 0.3);
+                border-width: 5px;
+                opacity: 0.8;
             }
         }
         .button-container {
@@ -139,25 +133,34 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 15px rgba(151, 192, 137, 0.4);
         }
-        @media (max-width: 1200px) {
-            .container {
-                max-width: 100%;
-                padding: 0 40px;
-            }
-        }
         @media (max-width: 768px) {
-            .container {
-                padding: 0 20px;
-            }
-            .vertical-gallery {
-                gap: 20px;
-            }
-            .cta-button {
-                padding: 16px 40px;
-                font-size: 18px;
+            .click-indicator {
+                display: block;
             }
             .clickable-image::after {
-                opacity: 0.6;
+                border-width: 4px;
+                animation: borderPulseMobile 2s infinite;
+            }
+            @keyframes borderPulseMobile {
+                0%, 100% {
+                    border-width: 4px;
+                    opacity: 0.7;
+                }
+                50% {
+                    border-width: 7px;
+                    opacity: 0.9;
+                }
+            }
+            .clickable-image a img {
+                animation: gentleScalePulse 3s infinite ease-in-out;
+            }
+            @keyframes gentleScalePulse {
+                0%, 100% {
+                    transform: scale(1);
+                }
+                50% {
+                    transform: scale(1.02);
+                }
             }
         }
         @media (max-width: 480px) {
@@ -176,11 +179,11 @@
                 width: 100%;
                 max-width: 300px;
             }
-            .clickable-image::after {
-                opacity: 0.5;
-            }
-            .clickable-image a img {
-                animation: gentleScalePulse 3s infinite ease-in-out;
+            .click-indicator {
+                font-size: 12px;
+                padding: 6px 12px;
+                bottom: 10px;
+                right: 10px;
             }
         }
     </style>
@@ -197,6 +200,7 @@
             <div class="image-container clickable-image">
                 <a href="https://dikidi.net/458753" target="_blank">
                     <img src="3.JPG" alt="Кликабельное изображение" onerror="this.style.display='none'">
+                    <div class="click-indicator">НАЖМИТЕ</div>
                 </a>
             </div>
             <div class="image-container">
