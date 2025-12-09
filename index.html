@@ -8,40 +8,47 @@
         * {
             box-sizing: border-box;
         }
+        
         body {
             background-color: #dbe9da;
             margin: 0;
             padding: 20px;
             font-family: Arial, sans-serif;
         }
+        
         .container {
-            max-width: 1400px;
+            max-width: 1120px; 
             margin: 0 auto;
+            padding: 0 20px;
         }
-
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 15px; 
-            margin-bottom: 40px;
+        .vertical-gallery {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            margin-bottom: 50px;
+            align-items: center;
         }
-        .gallery-item {
-            overflow: hidden;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            background-color: #fff; 
-            aspect-ratio: 1 / 1;
-        }
-        .gallery-item img {
+        .image-container {
             width: 100%;
-            height: 100%;
-            object-fit: cover; 
-            display: block; 
+            max-width: 1080px; 
+            display: flex;
+            justify-content: center;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+            padding: 0;
+        }
+        .image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
         }
         .button-container {
             text-align: center;
-            padding: 20px 0;
+            padding: 30px 0;
         }
+        
         .cta-button {
             display: inline-block;
             background-color: #97c089;
@@ -61,37 +68,77 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 15px rgba(151, 192, 137, 0.4);
         }
-        @media (max-width: 768px) {
-            .gallery {
-                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-                gap: 10px;
+        @media (max-width: 1200px) {
+            .container {
+                max-width: 100%;
+                padding: 0 40px;
             }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 20px;
+            }
+            
+            .vertical-gallery {
+                gap: 20px;
+            }
+            
+            .cta-button {
+                padding: 16px 40px;
+                font-size: 18px;
+            }
+        }
+        
+        @media (max-width: 480px) {
             body {
                 padding: 15px;
             }
-        }
-        @media (max-width: 480px) {
-            .gallery {
-                grid-template-columns: 1fr 1fr;
+            
+            .container {
+                padding: 0 10px;
             }
+            
+            .vertical-gallery {
+                gap: 15px;
+            }
+            
             .cta-button {
-                padding: 15px 35px;
-                font-size: 18px;
+                padding: 14px 35px;
+                font-size: 16px;
+                width: 100%;
+                max-width: 300px;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="gallery">
-            <div class="gallery-item"><img src="1.JPG" alt=""></div>
-            <div class="gallery-item"><img src="2.JPG" alt=""></div>
-            <div class="gallery-item"><img src="3.JPG" alt=""></div>
-            <div class="gallery-item"><img src="4.JPG" alt=""></div>
-            <div class="gallery-item"><img src="5.JPG" alt=""></div>
-            <div class="gallery-item"><img src="6.JPG" alt=""></div>
-            <div class="gallery-item"><img src="7.JPG" alt=""></div>
-            <div class="gallery-item"><img src="8.JPG" alt=""></div>
+        <div class="vertical-gallery">
+            <div class="image-container">
+                <img src="1.JPG" alt="" onerror="this.style.display='none'">
+            </div>
+            <div class="image-container">
+                <img src="2.JPG" alt="" onerror="this.style.display='none'">
+            </div>
+            <div class="image-container">
+                <img src="3.JPG" alt="" onerror="this.style.display='none'">
+            </div>
+            <div class="image-container">
+                <img src="4.JPG" alt="" onerror="this.style.display='none'">
+            </div>
+            <div class="image-container">
+                <img src="5.JPG" alt="" onerror="this.style.display='none'">
+            </div>
+            <div class="image-container">
+                <img src="6.JPG" alt="" onerror="this.style.display='none'">
+            </div>
+            <div class="image-container">
+                <img src="7.JPG" alt="" onerror="this.style.display='none'">
+            </div>
+            <div class="image-container">
+                <img src="8.JPG" alt="" onerror="this.style.display='none'">
+            </div>
         </div>
         <div class="button-container">
             <a href="https://dikidi.net/458753" target="_blank" class="cta-button">
@@ -101,18 +148,50 @@
     </div>
     <script>
         window.addEventListener('load', function() {
-            const images = document.querySelectorAll('.gallery-item img');
+            const images = document.querySelectorAll('.image-container img');
+            let loadedCount = 0;
             let errorCount = 0;
-            images.forEach(img => {
-                if (!img.complete || img.naturalWidth === 0) {
-                    console.error('Не загружена картинка:', img.src);
-                    img.style.border = '2px solid red'; 
+            
+            images.forEach((img, index) => {
+                if (img.complete && img.naturalWidth !== 0) {
+                    loadedCount++;
+                    console.log(`Картинка ${index + 1}.JPG загружена: ${img.naturalWidth}x${img.naturalHeight}`);
+                } else {
                     errorCount++;
+                    console.error(`Не загружена картинка: ${index + 1}.JPG`);
+                    const container = img.parentElement;
+                    container.innerHTML = `
+                        <div style="
+                            width: 100%; 
+                            height: 300px; 
+                            display: flex; 
+                            align-items: center; 
+                            justify-content: center; 
+                            background: #f5f5f5; 
+                            color: #888;
+                            font-weight: bold;
+                            border: 2px dashed #ccc;
+                        ">
+                            Изображение ${index + 1}.JPG не найдено
+                        </div>
+                    `;
                 }
             });
+            
             if (errorCount > 0) {
                 console.warn(`Внимание! Не загружено изображений: ${errorCount}. Проверьте имена файлов.`);
+            } else {
+                console.log(`Все ${loadedCount} изображений успешно загружены.`);
             }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const images = document.querySelectorAll('.image-container img');
+            images.forEach(img => {
+                img.addEventListener('error', function() {
+                    console.error('Ошибка загрузки изображения:', this.src);
+                });
+            });
         });
     </script>
 </body>
